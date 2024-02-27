@@ -17,6 +17,46 @@ body {
     background-image: url(./src/background.jpg);
 }
 
+.volume-value {
+    font-size: 1.6em;
+    margin-bottom: 70px;
+    color: #EF0013;
+    text-shadow: 0 5px 20px rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transition: 0.3s linear opacity;
+    position: absolute;
+    left: 2.7%;
+    top: 54%;
+    transform: translateX(-50%);
+}
+
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 7px;
+    width: 16%;
+    top: 77%;
+    background-color: transparent;
+    outline: none;
+    border: 2px solid #970013;
+    border-radius: 5px;
+    transform: rotate(-90deg);
+    transition: 0.2s linear all;
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0);
+    position: absolute;
+    left: -5.5%;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    box-shadow: 0px 0px 2px #000000;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #EF0013;
+    cursor: pointer;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -87,7 +127,7 @@ body {
     height: 140px;
     margin-top: -100px;
     border: 2px solid;
-    border-color: rgb(186, 1, 22);
+    border-color: #970013;
     margin-bottom: 10px;
 }
 
@@ -166,7 +206,7 @@ p {
 .album-art {
     position: fixed;
     bottom: 0;
-    left: 0;
+    left: 2.7%;
     margin-bottom: 100px;
     margin-left: 20px;
     border-radius: 50%;
@@ -236,10 +276,21 @@ audio {
     background-color: #800010;
 }
 
+.progress {
+    height: 100%;
+    background-color: #EF0013;
+    width: 0%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: width 0.2s ease;
+}
+
 .progress-bar {
     width: 300px;
     height: 10px;
-    background-color: #ddd;
+    background-color: transparent;
+    border: 2px solid #970013;
     position: relative;
     border-radius: 5px;
     overflow: hidden;
