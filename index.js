@@ -45,6 +45,74 @@ audio.addEventListener('timeupdate', () => {
     progress.style.width = `${progressWidth}%`;
 });
 
+audio.addEventListener('ended', () => {
+    document.querySelector('.album-art img').classList.remove('rotate');
+});
+
+const track = document.querySelector(".volume-slider");
+const volume_value_el = document.querySelector(".volume-value");
+const body = document.querySelector("body");
+
+const changeBgTo = (color) => (track.style.background = color);
+
+track.addEventListener("input", () => {
+    const value = track.value;
+
+    volume_value_el.innerText = value;
+    volume_value_el.style.opacity = 1;
+    track.style.boxShadow = "0 0px 15px red";
+});
+
+track.addEventListener("change", () => {
+    setTimeout(() => {
+        volume_value_el.style.opacity = 0;
+        track.style.boxShadow = "0 0px 15px transparent";
+    }, 1000);
+});
+
+track.addEventListener("input", () => {
+    const value = track.value;
+    setVolume(value);
+    
+    volume_value_el.innerText = value;
+    volume_value_el.style.opacity = 1;
+    track.style.boxShadow = "0 0px 15px red";
+});
+
+track.addEventListener("change", () => {
+    setTimeout(() => {
+        volume_value_el.style.opacity = 0;
+        track.style.boxShadow = "0 0px 15px transparent";
+    }, 1000);
+});
+
+function setVolume(volume) {
+    const normalizedVolume = volume / 100;
+    audio.volume = normalizedVolume;
+}
+
+const progressIndicator = document.getElementById('progress');
+const progressBar = document.querySelector('.progress-bar');
+
+audio.addEventListener('timeupdate', () => {
+    const currentTime = audio.currentTime;
+    const duration = audio.duration;
+    const progressWidth = (currentTime / duration) * 100;
+    progressIndicator.style.width = `${progressWidth}%`;
+});
+
+progressBar.addEventListener('click', (event) => {
+    const progressBarWidth = progressBar.clientWidth;
+    const clickX = event.offsetX;
+    const duration = audio.duration;
+    const newTime = (clickX / progressBarWidth) * duration;
+    audio.currentTime = newTime;
+});
+
+progressBar.addEventListener('selectstart', (event) => {
+    event.preventDefault();
+});
+
 document.addEventListener("DOMContentLoaded", function() {
     const socialsSvg = document.querySelector(".socials > svg");
     const imageModal = document.getElementById("imageModal");
@@ -125,7 +193,9 @@ function showImage() {
                 document.body.removeChild(imageContainer);
                 imageVisible = false;
             }, 500);
-        }, 4000);
+        }, 2000);
+
+        image.setAttribute('draggable', 'false');
     }
 };
 
@@ -134,4 +204,31 @@ stopBtn.addEventListener('click', () => {
     audio.currentTime = 0;
     playPauseBtn.textContent = 'Play';
     document.querySelector('.album-art img').classList.remove('rotate');
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    setVolume(15);
+});
+
+const images = document.querySelectorAll('img');
+
+images.forEach(image => {
+    image.setAttribute('draggable', 'false');
+});
+
+const volumeSlider = document.querySelector('.volume-slider');
+const initialValue = volumeSlider.value;
+
+const setInitialBackground = () => {
+    const percentage = (initialValue - volumeSlider.min) / (volumeSlider.max - volumeSlider.min) * 100;
+    volumeSlider.style.background = `linear-gradient(to right, #EF0013 ${percentage}%, transparent ${percentage}%)`;
+};
+
+setInitialBackground();
+
+volumeSlider.addEventListener('input', () => {
+    const value = volumeSlider.value;
+    const percentage = (value - volumeSlider.min) / (volumeSlider.max - volumeSlider.min) * 100;
+    
+    volumeSlider.style.background = `linear-gradient(to right, #EF0013 ${percentage}%, transparent ${percentage}%)`;
 });
